@@ -1,1 +1,92 @@
-hola AIDJR05
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102f3b">
+  <meta name="description" content="Una invitación a bajar el ritmo y volver al mar.">
+  <title>Marea — Vuelve a lo esencial</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__image" aria-hidden="true"></div>
+      <div class="hero__shade" aria-hidden="true"></div>
+
+      <header class="site-header">
+        <a class="brand" href="#" aria-label="Marea, inicio">
+          <span class="brand__mark" aria-hidden="true">M</span>
+          <span>MAREA</span>
+        </a>
+
+        <nav class="navigation" aria-label="Navegación principal">
+          <a href="#experiencia">La experiencia</a>
+          <a href="#destinos">Destinos</a>
+          <a class="navigation__contact" href="#contacto">Hablemos <span aria-hidden="true">↗</span></a>
+        </nav>
+
+        <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false">
+          <span></span>
+          <span></span>
+        </button>
+      </header>
+
+      <div class="hero__content">
+        <p class="eyebrow"><span></span> TU PRÓXIMA PAUSA EMPIEZA AQUÍ</p>
+        <h1 id="hero-title">Vuelve a<br><em>lo esencial.</em></h1>
+        <p class="hero__intro">Hay lugares que te recuerdan cómo se siente respirar profundo. El mar es uno de ellos.</p>
+        <a class="button" href="#experiencia">Descubre Marea <span aria-hidden="true">↗</span></a>
+      </div>
+
+      <div class="hero__bottom">
+        <a class="scroll-cue" href="#experiencia">
+          <span class="scroll-cue__line" aria-hidden="true"></span>
+          <span>DESLIZA PARA EXPLORAR</span>
+        </a>
+        <p class="hero__location"><span aria-hidden="true">◉</span> COSTA DEL PACÍFICO · 20° 37' N</p>
+      </div>
+
+      <div class="hero__index" aria-hidden="true"><span>01</span> / 03</div>
+    </section>
+  </main>
+
+  <script>
+    const hero = document.querySelector(".hero");
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navigation = document.querySelector(".navigation");
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let ticking = false;
+
+    function updateParallax() {
+      if (prefersReducedMotion) return;
+      const offset = Math.min(window.scrollY, hero.offsetHeight);
+      hero.style.setProperty("--parallax-y", `${offset * 0.32}px`);
+      ticking = false;
+    }
+
+    window.addEventListener("scroll", () => {
+      if (prefersReducedMotion) return;
+      if (!ticking) {
+        window.requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    menuToggle.addEventListener("click", () => {
+      const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+      menuToggle.setAttribute("aria-expanded", String(!isOpen));
+      menuToggle.setAttribute("aria-label", isOpen ? "Abrir menú" : "Cerrar menú");
+      navigation.classList.toggle("navigation--open", !isOpen);
+    });
+
+    navigation.addEventListener("click", (event) => {
+      if (event.target.closest("a")) {
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Abrir menú");
+        navigation.classList.remove("navigation--open");
+      }
+    });
+  </script>
+</body>
+</html>
